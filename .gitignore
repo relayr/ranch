@@ -1,4 +1,5 @@
 .ranch.plt
+.rebar3
 .eunit
 deps
 doc/*.css
