@@ -118,7 +118,7 @@ get_protocol_options(Ref) ->
 set_protocol_options(Ref, Opts) ->
 	ranch_server:set_protocol_options(Ref, Opts).
 
--spec filter_options([{atom(), any()} | {raw, any(), any(), any()}],
+-spec filter_options([{atom(), any()} | {raw, any(), any(), any()} | atom()],
 	[atom()], Acc) -> Acc when Acc :: [any()].
 filter_options(UserOptions, AllowedKeys, DefaultOptions) ->
 	AllowedOptions = filter_user_options(UserOptions, AllowedKeys),
@@ -134,6 +134,11 @@ filter_user_options([Opt = {raw, _, _, _}|Tail], AllowedKeys) ->
 		true -> [Opt|filter_user_options(Tail, AllowedKeys)];
 		false -> filter_user_options(Tail, AllowedKeys)
 	end;
+filter_user_options([Opt|Tail], AllowedKeys) when is_atom(Opt) ->
+    case lists:member(Opt, AllowedKeys) of
+        true -> [Opt|filter_user_options(Tail, AllowedKeys)];
+        false -> filter_user_options(Tail, AllowedKeys)
+    end;
 filter_user_options([], _) ->
 	[].
 
