@@ -34,7 +34,8 @@
 -export([shutdown/2]).
 -export([close/1]).
 
--type opts() :: [{backlog, non_neg_integer()}
+-type opts() :: [inet | inet6
+    | {backlog, non_neg_integer()}
 	| {ip, inet:ip_address()}
 	| {linger, {boolean(), non_neg_integer()}}
 	| {nodelay, boolean()}
@@ -59,8 +60,8 @@ listen(Opts) ->
 	%% first argument.
 	gen_tcp:listen(0, ranch:filter_options(Opts4,
 		[backlog, ip, linger, nodelay, port, raw,
-			send_timeout, send_timeout_close],
-		[binary, {active, false}, {packet, raw},
+			send_timeout, send_timeout_close, inet, inet6],
+		[binary, inet, {active, false}, {packet, raw},
 			{reuseaddr, true}, {nodelay, true}])).
 
 -spec accept(inet:socket(), timeout())

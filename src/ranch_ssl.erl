@@ -34,7 +34,8 @@
 -export([shutdown/2]).
 -export([close/1]).
 
--type opts() :: [{backlog, non_neg_integer()}
+-type opts() :: [inet | inet6
+    | {backlog, non_neg_integer()}
 	| {cacertfile, string()}
 	| {cacerts, [Der::binary()]}
 	| {cert, Der::binary()}
@@ -88,8 +89,8 @@ listen(Opts) ->
 			log_alert, password, port, raw,
 			reuse_session, reuse_sessions, secure_renegotiate,
 			send_timeout, send_timeout_close, verify, verify_fun,
-			versions],
-		[binary, {active, false}, {packet, raw},
+			versions, inet, inet6],
+		[binary, inet, {active, false}, {packet, raw},
 			{reuseaddr, true}, {nodelay, true}])).
 
 -spec accept(ssl:sslsocket(), timeout())
